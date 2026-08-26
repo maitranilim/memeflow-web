@@ -41,9 +41,12 @@ export default function Header() {
           </span>
         </Link>
         
+        {/* Search isn't implemented yet; disabled rather than a button that does nothing. */}
         <button
-          className="p-2 rounded-lg hover:bg-gray-800 transition-colors"
-          aria-label="Search"
+          className="p-2 rounded-lg opacity-50 cursor-not-allowed"
+          aria-label="Search (coming soon)"
+          title="Coming soon"
+          disabled
         >
           <Search className="w-5 h-5 text-gray-400" />
         </button>

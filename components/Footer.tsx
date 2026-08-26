@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function Footer() {
   return (
     <footer className="w-full px-6 py-6 border-t border-gray-800 mt-auto">
@@ -8,12 +6,15 @@ export default function Footer() {
           © {new Date().getFullYear()} MemeFlow. All rights reserved.
         </div>
         <div className="flex gap-4">
-          <Link href="/admin" className="hover:text-[#00d4c9] transition-colors">
+          {/* Admin dashboard and profile pages don't exist yet - shown as
+              disabled so the footer previews what's coming without linking
+              to a 404. */}
+          <span className="cursor-not-allowed opacity-50" title="Coming soon">
             Admin Dashboard
-          </Link>
-          <Link href="/profile" className="hover:text-[#00d4c9] transition-colors">
+          </span>
+          <span className="cursor-not-allowed opacity-50" title="Coming soon">
             Profile
-          </Link>
+          </span>
         </div>
       </div>
     </footer>
