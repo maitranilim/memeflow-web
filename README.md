@@ -22,13 +22,14 @@ interactive components — is in place and running against sample data. The back
   and falls back to built-in sample data otherwise
 - A test suite (Vitest + React Testing Library) covering navigation, filtering, and the
   sample-data fallback
+- Continuous integration (GitHub Actions): lint, test, and build run on every push and
+  pull request against `main`
 
 ### Not implemented yet
 - Authentication / accounts
 - Meme uploads
 - Like/dislike/save persisting to the database (the buttons currently only toggle locally)
 - Admin analytics dashboard
-- Continuous integration
 
 These are being worked through in order — see [Roadmap](#roadmap) below.
 
@@ -116,8 +117,7 @@ memeflow-web/
 2. Implement the upload flow
 3. Persist like/dislike/save interactions to the database
 4. Add an admin dashboard for basic engagement stats
-5. Add a CI pipeline
-6. Deploy to Vercel
+5. Deploy to Vercel
 
 ## License
 
