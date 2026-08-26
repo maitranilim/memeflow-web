@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: 'MemeFlow - Social Meme Viewer',
   description: 'Browse, like, and share the funniest memes across multiple genres',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.svg',
   },
 };
 

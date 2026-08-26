@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import GenreFilter from '@/components/GenreFilter';
 import MemeCard from '@/components/MemeCard';
@@ -18,9 +19,14 @@ export default function MemeExplorer({ memes }: MemeExplorerProps) {
   );
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="w-full flex flex-col items-center"
+    >
       <GenreFilter selectedGenre={selectedGenre} onGenreChange={setSelectedGenre} />
       <MemeCard memes={filteredMemes} />
-    </>
+    </motion.div>
   );
 }
