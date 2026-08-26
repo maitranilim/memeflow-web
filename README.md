@@ -15,7 +15,8 @@ interactive components — is in place and running against sample data. The back
   metaphorical, tech)
 - Like / dislike / save / share controls on each meme card, with animated transitions
 - Header, footer, and a floating upload button (the upload button currently opens a
-  placeholder modal — it does not upload anything yet)
+  placeholder modal — it does not upload anything yet); search and the admin/profile
+  footer links are shown disabled with a "coming soon" label until those pages exist
 - Tailwind CSS design system with a dark theme and neon accent colors
 - Framer Motion transitions between memes
 - Meme data is read from Supabase when it's configured (see [Database setup](#database-setup)),
