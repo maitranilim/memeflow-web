@@ -20,13 +20,14 @@ interactive components — is in place and running against sample data. The back
 - Framer Motion transitions between memes
 - Meme data is read from Supabase when it's configured (see [Database setup](#database-setup)),
   and falls back to built-in sample data otherwise
+- A test suite (Vitest + React Testing Library) covering navigation, filtering, and the
+  sample-data fallback
 
 ### Not implemented yet
 - Authentication / accounts
 - Meme uploads
 - Like/dislike/save persisting to the database (the buttons currently only toggle locally)
 - Admin analytics dashboard
-- Automated tests
 - Continuous integration
 
 These are being worked through in order — see [Roadmap](#roadmap) below.
@@ -78,6 +79,9 @@ npm run build    # production build
 npm start        # run a production build
 npm run lint     # run ESLint
 npm run format   # format the codebase with Prettier
+npm test         # run the test suite once
+npm run test:watch     # run tests in watch mode
+npm run test:coverage  # run tests with a coverage report
 ```
 
 ## Project structure
@@ -112,7 +116,7 @@ memeflow-web/
 2. Implement the upload flow
 3. Persist like/dislike/save interactions to the database
 4. Add an admin dashboard for basic engagement stats
-5. Add automated tests and a CI pipeline
+5. Add a CI pipeline
 6. Deploy to Vercel
 
 ## License
