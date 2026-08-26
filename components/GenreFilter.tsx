@@ -1,29 +1,23 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import type { Genre } from '@/lib/types';
 
-const genres = ['all', 'dark-humor', 'sarcastic', 'pun', 'metaphorical', 'tech'];
+const genres: Array<Genre | 'all'> = ['all', 'dark-humor', 'sarcastic', 'pun', 'metaphorical', 'tech'];
 
 interface GenreFilterProps {
-  onGenreChange?: (genre: string) => void;
+  selectedGenre: Genre | 'all';
+  onGenreChange: (genre: Genre | 'all') => void;
 }
 
-export default function GenreFilter({ onGenreChange }: GenreFilterProps) {
-  const [selectedGenre, setSelectedGenre] = useState('all');
-
-  const handleGenreClick = (genre: string) => {
-    setSelectedGenre(genre);
-    onGenreChange?.(genre);
-  };
-
+export default function GenreFilter({ selectedGenre, onGenreChange }: GenreFilterProps) {
   return (
     <div className="w-full max-w-4xl mb-8">
       <div className="flex flex-wrap items-center justify-center gap-3">
         {genres.map((genre) => (
           <motion.button
             key={genre}
-            onClick={() => handleGenreClick(genre)}
+            onClick={() => onGenreChange(genre)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               selectedGenre === genre
                 ? 'bg-gradient-to-r from-[#00d4c9] to-[#ff4db6] text-white shadow-lg'

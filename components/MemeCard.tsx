@@ -2,61 +2,43 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Bookmark, Share2, ChevronLeft, ChevronRight, ThumbsDown } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
+import type { Meme } from '@/lib/types';
 
-// Mock meme data for now
-const mockMemes = [
-  {
-    id: 1,
-    title: 'Sample Meme 1',
-    caption: 'This is a funny meme about coding',
-    imageUrl: 'https://via.placeholder.com/600x400/0b1020/00d4c9?text=Meme+1',
-    genre: 'tech',
-    likes: 42,
-    saves: 10,
-  },
-  {
-    id: 2,
-    title: 'Sample Meme 2',
-    caption: 'Dark humor at its finest',
-    imageUrl: 'https://via.placeholder.com/600x400/0b1020/ff4db6?text=Meme+2',
-    genre: 'dark-humor',
-    likes: 156,
-    saves: 45,
-  },
-];
+interface MemeCardProps {
+  memes: Meme[];
+}
 
-export default function MemeCard() {
+export default function MemeCard({ memes }: MemeCardProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [direction, setDirection] = useState(0);
 
-  const currentMeme = mockMemes[currentIndex];
-
-  const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setDirection(-1);
-      setCurrentIndex(currentIndex - 1);
-      resetInteractions();
-    }
-  };
-
-  const handleNext = () => {
-    if (currentIndex < mockMemes.length - 1) {
-      setDirection(1);
-      setCurrentIndex(currentIndex + 1);
-      resetInteractions();
-    }
-  };
+  // Keep the index in range when the meme list changes (e.g. a genre filter is applied).
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [memes]);
 
   const resetInteractions = () => {
     setLiked(false);
     setDisliked(false);
     setSaved(false);
   };
+
+  const handlePrevious = useCallback(() => {
+    setCurrentIndex((index) => Math.max(index - 1, 0));
+    setDirection(-1);
+    resetInteractions();
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((index) => Math.min(index + 1, memes.length - 1));
+    setDirection(1);
+    resetInteractions();
+  }, [memes.length]);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -72,8 +54,8 @@ export default function MemeCard() {
     setSaved(!saved);
   };
 
-  const handleShare = async () => {
-    const url = `${window.location.origin}/meme/${currentMeme.id}`;
+  const handleShare = async (memeId: string) => {
+    const url = `${window.location.origin}/meme/${memeId}`;
     try {
       await navigator.clipboard.writeText(url);
       alert('Link copied to clipboard!');
@@ -91,7 +73,7 @@ export default function MemeCard() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentIndex]);
+  }, [handleNext, handlePrevious]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -110,6 +92,16 @@ export default function MemeCard() {
     }),
   };
 
+  if (memes.length === 0) {
+    return (
+      <div className="w-full max-w-2xl text-center py-16 text-gray-400">
+        No memes found for this genre yet.
+      </div>
+    );
+  }
+
+  const currentMeme = memes[currentIndex];
+
   return (
     <div className="relative w-full max-w-2xl">
       {/* Previous/Next Navigation Buttons */}
@@ -124,7 +116,7 @@ export default function MemeCard() {
 
       <button
         onClick={handleNext}
-        disabled={currentIndex === mockMemes.length - 1}
+        disabled={currentIndex === memes.length - 1}
         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 p-3 rounded-full bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
         aria-label="Next meme"
       >
@@ -161,7 +153,7 @@ export default function MemeCard() {
           <div className="p-6 space-y-4">
             <div>
               <h2 className="text-xl font-bold text-white mb-2">{currentMeme.title}</h2>
-              <p className="text-gray-400">{currentMeme.caption}</p>
+              {currentMeme.caption && <p className="text-gray-400">{currentMeme.caption}</p>}
             </div>
 
             {/* Genre Badge */}
@@ -213,7 +205,7 @@ export default function MemeCard() {
               </motion.button>
 
               <motion.button
-                onClick={handleShare}
+                onClick={() => handleShare(currentMeme.id)}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700 transition-colors"
@@ -228,9 +220,9 @@ export default function MemeCard() {
 
       {/* Progress Indicator */}
       <div className="flex items-center justify-center gap-2 mt-6">
-        {mockMemes.map((_, idx) => (
+        {memes.map((meme, idx) => (
           <div
-            key={idx}
+            key={meme.id}
             className={`h-1 rounded-full transition-all ${
               idx === currentIndex ? 'w-8 bg-gradient-to-r from-[#00d4c9] to-[#ff4db6]' : 'w-1 bg-gray-700'
             }`}
